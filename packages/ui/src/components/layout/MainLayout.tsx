@@ -21,6 +21,7 @@ import { SpaceActionsSheet, SpaceDeleteDialog } from '@/components/session/space
 import { SpaceApplyDialog } from '@/components/session/spaces/SpaceApplyDialog';
 import { SpaceSetupOutputDialog } from '@/components/session/spaces/SpaceSetupOutput';
 import { ArchiveView } from '@/components/views/ArchiveView';
+import { FleetView } from '@/components/views/fleet/FleetView';
 import { WorktreesView } from '@/components/views/WorktreesView';
 import { UsageStatsView } from '@/components/views/usage/UsageStatsView';
 import { DiffWorkerProvider } from '@/contexts/DiffWorkerProvider';
@@ -64,6 +65,7 @@ export const MainLayout: React.FC = () => {
     const isScheduledTasksPageOpen = useUIStore((state) => state.isScheduledTasksDialogOpen);
     const isArchivePageOpen = useUIStore((state) => state.isArchivePageOpen);
     const isUsageStatsPageOpen = useUIStore((state) => state.isUsageStatsPageOpen);
+    const isFleetPageOpen = useUIStore((state) => state.isFleetPageOpen);
     const worktreesPageProjectId = useUIStore((state) => state.worktreesPageProjectId);
     const openGuestPageId = useUIStore((state) => state.openGuestPageId);
     const guestPages = useGuestPages();
@@ -75,7 +77,7 @@ export const MainLayout: React.FC = () => {
     // Any full-page surface replacing the chat area. While open, the chat is
     // fully hidden (not just covered) so none of its floating chrome bleeds
     // through, and selecting a session or draft anywhere closes the surface.
-    const isSurfacePageOpen = isScheduledTasksPageOpen || isArchivePageOpen || isUsageStatsPageOpen || Boolean(worktreesPageProjectId) || isRunOverviewOpen || Boolean(guestPage);
+    const isSurfacePageOpen = isScheduledTasksPageOpen || isArchivePageOpen || isUsageStatsPageOpen || isFleetPageOpen || Boolean(worktreesPageProjectId) || isRunOverviewOpen || Boolean(guestPage);
 
     React.useEffect(() => {
         const closeSurfacePages = () => useUIStore.getState().closeMainSurfaces();
@@ -148,6 +150,11 @@ export const MainLayout: React.FC = () => {
                                             {isUsageStatsPageOpen && (
                                                 <div className="absolute inset-0 z-10 bg-background">
                                                     <ErrorBoundary><UsageStatsView /></ErrorBoundary>
+                                                </div>
+                                            )}
+                                            {isFleetPageOpen && (
+                                                <div className="absolute inset-0 z-10 bg-background">
+                                                    <ErrorBoundary><FleetView /></ErrorBoundary>
                                                 </div>
                                             )}
                                             <ErrorBoundary><WorktreesView /></ErrorBoundary>
