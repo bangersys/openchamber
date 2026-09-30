@@ -167,6 +167,7 @@ export const dict: Record<I18nKey, string> = {
   'mobile.connect.scan.failed': 'その QR コードを読み取れませんでした。もう一度試すか、URL を手動で入力してください。',
   'mobile.instances.addTitle': 'インスタンスを追加',
   'mobile.instances.addManual': 'アドレスで追加',
+  'fleet.importAction': 'デスクトップホストをインポート',
   'mobile.instances.editTitle': 'インスタンスを編集',
   'mobile.instances.label.label': '名前',
   'mobile.instances.label.placeholder': '表示名（任意）',

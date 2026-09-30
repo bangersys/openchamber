@@ -131,6 +131,7 @@ export const dict = {
   'mobile.connect.error.passwordFailed': 'Konnte diesen Server nicht entsperren. Überprüfen Sie das Passwort.',
   'mobile.instances.addTitle': 'Instanz hinzufügen',
   'mobile.instances.addManual': 'Nach Adresse hinzufügen',
+  'fleet.importAction': 'Desktop-Hosts importieren',
   'mobile.instances.editTitle': 'Instanz bearbeiten',
   'mobile.instances.edit': 'Bearbeiten',
   'mobile.instances.delete': 'Löschen',

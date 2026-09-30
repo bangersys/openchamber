@@ -163,6 +163,7 @@ export const dict = {
   'mobile.connect.error.passwordFailed': 'Could not unlock that server. Check the password.',
   'mobile.instances.addTitle': 'Add instance',
   'mobile.instances.addManual': 'Add by address',
+  'fleet.importAction': 'Import desktop hosts',
   'mobile.instances.editTitle': 'Edit instance',
   'mobile.instances.edit': 'Edit',
   'mobile.instances.delete': 'Delete',

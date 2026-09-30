@@ -164,6 +164,7 @@ export const dict: Record<I18nKey, string> = {
   "mobile.connect.error.passwordFailed": "No se pudo desbloquear ese servidor. Revisa la contraseña.",
   "mobile.instances.addTitle": "Agregar instancia",
   "mobile.instances.addManual": "Añadir por dirección",
+  "fleet.importAction": "Importar hosts de escritorio",
   "mobile.instances.editTitle": "Editar instancia",
   "mobile.instances.edit": "Editar",
   "mobile.instances.delete": "Eliminar",

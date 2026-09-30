@@ -163,6 +163,7 @@ export const dict = {
   'mobile.connect.error.passwordFailed': 'Kan die server niet ontgrendelen. Controleer het wachtwoord.',
   'mobile.instances.addTitle': 'Instantie toevoegen',
   'mobile.instances.addManual': 'Toevoegen via adres',
+  'fleet.importAction': 'Desktophosts importeren',
   'mobile.instances.editTitle': 'Instantie bewerken',
   'mobile.instances.edit': 'Bewerken',
   'mobile.instances.delete': 'Verwijderen',

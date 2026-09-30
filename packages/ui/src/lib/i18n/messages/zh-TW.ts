@@ -164,6 +164,7 @@ export const dict: Record<I18nKey, string> = {
   'mobile.connect.error.passwordFailed': '無法解鎖該伺服器。請檢查密碼。',
   'mobile.instances.addTitle': '新增執行個體',
   'mobile.instances.addManual': '透過位址新增',
+  'fleet.importAction': '匯入桌面主機',
   'mobile.instances.editTitle': '編輯執行個體',
   'mobile.instances.edit': '編輯',
   'mobile.instances.delete': '刪除',

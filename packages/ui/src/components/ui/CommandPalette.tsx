@@ -98,6 +98,7 @@ export const CommandPalette: React.FC = () => {
   const openContextFile = useUIStore((s) => s.openContextFile);
   const shortcutOverrides = useUIStore((s) => s.shortcutOverrides);
   const setArchivePageOpen = useUIStore((s) => s.setArchivePageOpen);
+  const setFleetPageOpen = useUIStore((s) => s.setFleetPageOpen);
   const setProjectContextTab = useUIStore((s) => s.setProjectContextTab);
 
   const openNewSessionDraft = useSessionUIStore((s) => s.openNewSessionDraft);
@@ -327,6 +328,17 @@ export const CommandPalette: React.FC = () => {
         }),
       },
       {
+        id: 'open-fleet',
+        secondary: true,
+        title: t('mobile.menu.instances'),
+        icon: <Icon name="server" className="mr-2 h-4 w-4" />,
+        searchText: t('mobile.menu.instances'),
+        onSelect: run(() => {
+          setSessionSwitcherOpen(false);
+          setFleetPageOpen(true);
+        }),
+      },
+      {
         id: 'open-notes',
         secondary: true,
         title: t('commandPalette.item.openNotes'),
@@ -409,6 +421,7 @@ export const CommandPalette: React.FC = () => {
     currentSessionId,
     togglePinnedSession,
     setArchivePageOpen,
+    setFleetPageOpen,
     setProjectContextTab,
   ]);
 

@@ -14,7 +14,7 @@ import { FleetTile } from './FleetTile';
  * selection logic; Enter focuses the selected host (full chat takes over
  * the single active runtime).
  */
-export function FleetGrid({ onImport }: { onImport: () => void }): React.ReactNode {
+export function FleetGrid({ onAdd }: { onAdd: () => void }): React.ReactNode {
   const { t } = useI18n();
   const hosts = useFleetStore((state) => state.hosts);
   const hostIds = React.useMemo(() => hosts.map((host) => host.id), [hosts]);
@@ -112,7 +112,7 @@ export function FleetGrid({ onImport }: { onImport: () => void }): React.ReactNo
     return (
       <div className="flex flex-col items-center gap-3 px-6 py-10 text-center">
         <p className="typography-ui-label font-medium text-foreground">{t('mobile.connect.saved.empty')}</p>
-        <Button type="button" variant="outline" onClick={onImport}>
+        <Button type="button" variant="outline" onClick={onAdd}>
           {t('mobile.instances.addManual')}
         </Button>
       </div>
@@ -123,7 +123,7 @@ export function FleetGrid({ onImport }: { onImport: () => void }): React.ReactNo
     <div className="@container/fleet-grid min-h-0 flex-1 overflow-y-auto p-4">
       <div
         ref={containerRef}
-        role="listbox"
+        role="list"
         aria-label={t('mobile.menu.instances')}
         onKeyDown={handleKeyDown}
         className="grid min-w-0 grid-cols-1 gap-3 @min-[34rem]:grid-cols-2 @min-[54rem]:grid-cols-3"

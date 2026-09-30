@@ -164,6 +164,7 @@ export const dict: Record<I18nKey, string> = {
   'mobile.connect.error.passwordFailed': '无法解锁该服务器。请检查密码。',
   'mobile.instances.addTitle': '添加实例',
   'mobile.instances.addManual': '通过地址添加',
+  'fleet.importAction': '导入桌面主机',
   'mobile.instances.editTitle': '编辑实例',
   'mobile.instances.edit': '编辑',
   'mobile.instances.delete': '删除',

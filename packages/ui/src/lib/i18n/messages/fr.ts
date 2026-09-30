@@ -2947,6 +2947,7 @@ export const dict = {
   'mobile.connect.error.passwordFailed': 'Impossible de déverrouiller ce serveur. Vérifiez le mot de passe.',
   'mobile.instances.addTitle': 'Ajouter une instance',
   'mobile.instances.addManual': 'Ajouter par adresse',
+  'fleet.importAction': 'Importer les hôtes du bureau',
   'mobile.instances.editTitle': 'Modifier l\'instance',
   'mobile.instances.edit': 'Modifier',
   'mobile.instances.delete': 'Supprimer',

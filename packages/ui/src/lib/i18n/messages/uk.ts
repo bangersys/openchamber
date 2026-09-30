@@ -164,6 +164,7 @@ export const dict: Record<I18nKey, string> = {
   "mobile.connect.error.passwordFailed": "Не вдалося розблокувати сервер. Перевір пароль.",
   "mobile.instances.addTitle": "Додати інстанс",
   "mobile.instances.addManual": "Додати за адресою",
+  "fleet.importAction": "Імпортувати хости робочого столу",
   "mobile.instances.editTitle": "Редагувати інстанс",
   "mobile.instances.edit": "Редагувати",
   "mobile.instances.delete": "Видалити",

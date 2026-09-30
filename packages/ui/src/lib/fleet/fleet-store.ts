@@ -134,6 +134,10 @@ const newHostId = (): FleetHostId =>
     ? crypto.randomUUID()
     : `fleet-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
+/** Identity for dedupe: `normalizeHostUrl` keeps a trailing slash, so
+ * `https://h:3000/` and `https://h:3000` would otherwise become two tiles. */
+const canonicalApiUrl = (apiUrl: string): string => apiUrl.replace(/\/+$/, '');
+
 export type FleetHostInput = {
   label: string;
   apiUrl: string;
@@ -144,15 +148,11 @@ export type FleetHostInput = {
 
 type FleetState = {
   hosts: FleetHost[];
-  defaultHostId: FleetHostId | null;
-  focusHostId: FleetHostId | null;
   statuses: Record<FleetHostId, FleetTileStatus>;
   addHost: (input: FleetHostInput) => FleetHostId;
   /** Imports desktop hosts with a direct apiUrl; relay-only hosts are skipped. Returns the number added. */
   importFromDesktopHosts: (hosts: DesktopHost[]) => number;
   removeHost: (id: FleetHostId) => void;
-  setDefault: (id: FleetHostId | null) => void;
-  setFocus: (id: FleetHostId | null) => void;
   /** Makes this host the single active runtime for full chat. */
   focusHost: (id: FleetHostId) => void;
   refreshHost: (id: FleetHostId) => Promise<void>;
@@ -161,14 +161,13 @@ type FleetState = {
 
 export const useFleetStore = create<FleetState>()((set, get) => ({
   hosts: loadPersistedHosts(),
-  defaultHostId: null,
-  focusHostId: null,
   statuses: {},
 
   addHost: (input) => {
     const apiUrl = normalizeHostUrl(input.apiUrl);
     if (!apiUrl) throw new Error('invalid-api-url');
-    const existing = get().hosts.find((host) => host.apiUrl === apiUrl);
+    const canonical = canonicalApiUrl(apiUrl);
+    const existing = get().hosts.find((host) => canonicalApiUrl(host.apiUrl) === canonical);
     if (existing) return existing.id;
     const id = newHostId();
     const requestHeaders = sanitizeHeaders(input.requestHeaders);
@@ -188,12 +187,12 @@ export const useFleetStore = create<FleetState>()((set, get) => ({
   },
 
   importFromDesktopHosts: (desktopHosts) => {
-    const knownUrls = new Set(get().hosts.map((host) => host.apiUrl));
+    const knownUrls = new Set(get().hosts.map((host) => canonicalApiUrl(host.apiUrl)));
     const additions: FleetHost[] = [];
     for (const desktopHost of desktopHosts) {
       const apiUrl = desktopHost.apiUrl ? normalizeHostUrl(desktopHost.apiUrl) : null;
-      if (!apiUrl || knownUrls.has(apiUrl)) continue;
-      knownUrls.add(apiUrl);
+      if (!apiUrl || knownUrls.has(canonicalApiUrl(apiUrl))) continue;
+      knownUrls.add(canonicalApiUrl(apiUrl));
       const requestHeaders = sanitizeHeaders(desktopHost.requestHeaders);
       additions.push({
         id: desktopHost.id && !get().hosts.some((host) => host.id === desktopHost.id)
@@ -228,26 +227,13 @@ export const useFleetStore = create<FleetState>()((set, get) => ({
       return {
         hosts: state.hosts.filter((host) => host.id !== id),
         statuses,
-        defaultHostId: state.defaultHostId === id ? null : state.defaultHostId,
-        focusHostId: state.focusHostId === id ? null : state.focusHostId,
       };
     });
-  },
-
-  setDefault: (id) => {
-    if (id !== null && !get().hosts.some((host) => host.id === id)) return;
-    set({ defaultHostId: id });
-  },
-
-  setFocus: (id) => {
-    if (id !== null && !get().hosts.some((host) => host.id === id)) return;
-    set({ focusHostId: id });
   },
 
   focusHost: (id) => {
     const host = get().hosts.find((entry) => entry.id === id);
     if (!host) return;
-    set({ focusHostId: id });
     switchRuntimeEndpoint({
       apiBaseUrl: host.apiUrl,
       ...(host.clientToken ? { clientToken: host.clientToken } : {}),
@@ -265,9 +251,15 @@ export const useFleetStore = create<FleetState>()((set, get) => ({
   refreshAll: () => refreshAllInternal(),
 }));
 
-// Persist the host list (hosts only — statuses and UI focus are ephemeral).
+// Persist the host list on host membership changes only. Statuses are
+// ephemeral probe results: persisting them would rewrite localStorage on every
+// poll pass and resurrect stale presence across restarts.
+let lastPersistedHosts = useFleetStore.getState().hosts;
 useFleetStore.subscribe((state) => {
-  persistHosts(state.hosts);
+  if (state.hosts !== lastPersistedHosts) {
+    lastPersistedHosts = state.hosts;
+    persistHosts(state.hosts);
+  }
 });
 
 // Per-host generation tokens. A probe commits only when its generation is

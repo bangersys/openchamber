@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n';
+import { isDesktopShell } from '@/lib/desktop';
 import { desktopHostsGet } from '@/lib/desktopHosts';
 
 import {
@@ -24,6 +25,9 @@ export function FleetView(): React.ReactNode {
   const [apiUrl, setApiUrl] = React.useState('');
   const [clientToken, setClientToken] = React.useState('');
   const [formError, setFormError] = React.useState(false);
+  // Desktop import reads the Electron-side host config; on every other
+  // runtime the call answers empty, so the button is not offered there.
+  const showImport = React.useMemo(() => isDesktopShell(), []);
 
   React.useEffect(() => {
     startFleetPolling();
@@ -63,7 +67,7 @@ export function FleetView(): React.ReactNode {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-10 flex flex-col bg-background text-foreground">
+    <div className="flex h-full min-h-0 flex-col bg-background text-foreground">
       <header className="flex shrink-0 flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border/50 px-6 py-3">
         <h1 className="truncate typography-ui-label font-semibold">{t('mobile.menu.instances')}</h1>
         <span className="shrink-0 typography-micro text-muted-foreground">
@@ -72,9 +76,11 @@ export function FleetView(): React.ReactNode {
             : t('mobile.sessions.project.sessionsPlural', { count: totalSessions })}
         </span>
         <span className="ms-auto flex shrink-0 items-center gap-2">
-          <Button type="button" size="sm" variant="outline" onClick={handleImport}>
-            {t('mobile.instances.addManual')}
-          </Button>
+          {showImport ? (
+            <Button type="button" size="sm" variant="outline" onClick={handleImport}>
+              {t('fleet.importAction')}
+            </Button>
+          ) : null}
           <Button type="button" size="sm" variant="outline" onClick={() => setFormOpen((open) => !open)}>
             {t('mobile.instances.addTitle')}
           </Button>
@@ -120,7 +126,7 @@ export function FleetView(): React.ReactNode {
         </div>
       ) : null}
       <div className="flex min-h-0 flex-1 flex-col">
-        <FleetGrid onImport={handleImport} />
+        <FleetGrid onAdd={() => setFormOpen(true)} />
       </div>
     </div>
   );

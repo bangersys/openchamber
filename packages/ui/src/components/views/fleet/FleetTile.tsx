@@ -11,9 +11,9 @@ import type { FleetTileStatus } from '@/lib/fleet/fleet-types';
 
 type TileState = FleetTileStatus['state'];
 
-const STATUS_MESSAGE_KEY: Record<TileState, I18nKey> = {
+const STATUS_MESSAGE_KEY: Record<TileState, I18nKey | null> = {
   unknown: 'common.loading',
-  online: '',
+  online: null,
   offline: 'mobile.connect.error.unreachable',
   auth: 'mobile.connect.error.authRequired',
   incompatible: 'opencodeCompatibility.title',
@@ -63,8 +63,7 @@ export function FleetTile({ hostId, selected, tabIndex, onTileFocus }: FleetTile
     <article
       data-fleet-tile
       data-host-id={hostId}
-      role="option"
-      aria-selected={selected ?? undefined}
+      aria-current={selected ? true : undefined}
       tabIndex={tabIndex ?? 0}
       onFocus={() => onTileFocus?.(hostId)}
       className={cn(

@@ -149,6 +149,7 @@ export const dict = {
   'mobile.connect.error.passwordFailed': 'Sunucunun kilidi açılamadı. Şifreyi kontrol edin.',
   'mobile.instances.addTitle': 'Instance ekle',
   'mobile.instances.addManual': 'Adresle ekle',
+  'fleet.importAction': 'Masaüstü ana makinelerini içe aktar',
   'mobile.instances.editTitle': 'Instance\'ı düzenle',
   'mobile.instances.edit': 'Düzenle',
   'mobile.instances.delete': 'Sil',

@@ -164,6 +164,7 @@ export const dict: Record<I18nKey, string> = {
   'mobile.connect.error.passwordFailed': '서버 잠금을 해제할 수 없습니다. 비밀번호를 확인하세요.',
   'mobile.instances.addTitle': '인스턴스 추가',
   'mobile.instances.addManual': '주소로 추가',
+  'fleet.importAction': '데스크톱 호스트 가져오기',
   'mobile.instances.editTitle': '인스턴스 편집',
   'mobile.instances.edit': '편집',
   'mobile.instances.delete': '삭제',
